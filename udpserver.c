@@ -12,7 +12,7 @@
 #include "packet.h"
 
 #define STRING_SIZE 1024
-#defome BUFFERSIZE 81
+#define BUFFERSIZE 81
 
 /* SERV_UDP_PORT is the port number on which the server listens for
    incoming messages from clients. You should change this to a different
@@ -149,7 +149,7 @@ int main(void)
          eot->pack_seq = htons(sequence);
 
          bytes_sent = sendto(sock_server, eot, sizeof(struct packet), 0,
-            (struct sockaddr *)&client_addr, &client_addr_len)); //send End of Transmission packet to client
+            (struct sockaddr *)&client_addr, &client_addr_len); //send End of Transmission packet to client
 
          printf("\nEnd of Transmission Packet with sequence number %d transmitted with %d data bytes", sequence, eot->count);
 
