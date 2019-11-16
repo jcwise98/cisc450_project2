@@ -112,6 +112,7 @@ int main(void)
       printf("Enter name of file for transfer:");
       scanf("%s", filename);
 
+      printf("test");
       bytes_sent = sendto(sock_client, filename, STRING_SIZE, 0,
                           (struct sockaddr *)&server_addr, sizeof(server_addr));
 
