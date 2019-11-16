@@ -117,8 +117,11 @@ int main(void)
 
       // tmp flag
       short tmpFlag;
+      printf("before first recv");
       bytes_recd = recvfrom(sock_client, &tmpFlag, sizeof(short), 0,
                             (struct sockaddr *)0, (int *)0);
+      printf("after first recv");
+      
       if (bytes_recd <= 0)
       {
          perror("Packet Error!");
