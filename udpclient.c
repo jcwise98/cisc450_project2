@@ -84,8 +84,9 @@ int main(void)
 
    /* initialize server address information */
 
-   printf("Enter hostname of server: ");
-   scanf("%s", server_hostname);
+   //printf("Enter hostname of server: ");
+   //scanf("%s", server_hostname);
+   strcpy(server_hostname, "cisc450.cis.udel.edu");
    if ((server_hp = gethostbyname(server_hostname)) == NULL)
    {
       perror("Client: invalid server hostname\n");
@@ -107,12 +108,11 @@ int main(void)
    // valid file flag
    short valid_file = 0;
 
-   while (valid_file == 0)
-   {
+   //while (valid_file == 0)
+   //{
       printf("Enter name of file for transfer:");
       scanf("%s", filename);
 
-      printf("test");
       bytes_sent = sendto(sock_client, filename, STRING_SIZE, 0,
                           (struct sockaddr *)&server_addr, sizeof(server_addr));
 
@@ -139,7 +139,7 @@ int main(void)
       else
       {
       }
-   }
+   //}
 
    int total_bytes = 0;
    int packs_rec = 0;
