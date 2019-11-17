@@ -34,6 +34,7 @@ int main(void)
    unsigned int msg_len;                    /* length of message */
    int bytes_sent, bytes_recd, bytes_recd1; /* number of bytes sent or received */
    struct packet *header = malloc(sizeof(struct packet));
+   header->data = malloc(81);
 
    /* open a socket */
 
