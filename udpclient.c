@@ -34,7 +34,7 @@ int main(void)
    unsigned int msg_len;                    /* length of message */
    int bytes_sent, bytes_recd, bytes_recd1; /* number of bytes sent or received */
    struct packet *header = malloc(sizeof(struct packet));
-   header->data = malloc(81);
+   //header->data = malloc(81);
 
    /* open a socket */
 
@@ -153,7 +153,8 @@ int main(void)
 
    short tmp = ntohs(header->count);
    short tmp2 = ntohs(header->pack_seq);
-   strcpy(data, header->data);
+   printf("%s\n", header->data);
+   //strcpy(data, header->data);
    // increment total bytes
 
    total_bytes += tmp;
