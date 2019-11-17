@@ -140,10 +140,8 @@ int main(void)
 
             bytes_sent = sendto(sock_server, pkt, sizeof(struct packet), 0,
                                 (struct sockaddr *)&client_addr, client_addr_len); //send packet header to client
-            //bytes_trans += sendto(sock_server, data, strlen(buffer), 0,
-             //                     (struct sockaddr *)&client_addr, client_addr_len); //send data segment to client
-
-            printf("Packet %d transmitted with %d data bytes\n", sequence, len);
+            
+            printf("Packet %d generated for transmission with %d data bytes", sequence, len);
 
             sequence = !sequence; //increment sequence tracker
             packetsSent++;
@@ -158,7 +156,7 @@ int main(void)
          bytes_sent = sendto(sock_server, eot, sizeof(struct packet), 0,
                              (struct sockaddr *)&client_addr, client_addr_len); //send End of Transmission packet to client
 
-         printf("\nEnd of Transmission Packet with sequence number %d transmitted with %d data bytes", sequence, eot->count);
+         printf("\nEnd of Transmission Packet with sequence number %d transmitted", sequence);
 
          //free memory
          free(pkt);

@@ -11,4 +11,8 @@ struct packet{
     char data[80];
 };
 
+struct ack{
+    short ack_seq;
+}
+
 

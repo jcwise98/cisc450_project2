@@ -128,7 +128,7 @@ int main(void)
       short tmpFlag;
       bytes_recd = recvfrom(sock_client, &tmpFlag, sizeof(short), 0,
                             (struct sockaddr *)0, (int *)0);
-      
+
       if (bytes_recd <= 0)
       {
          perror("Packet Error!");
@@ -150,17 +150,36 @@ int main(void)
    int total_bytes = 0;
    int packs_rec = 0;
    int transmission_flag = 1;
-
+   int AckSeq = 0;
+   short tmp;
+   short tmp2;
+   struct ack *ACK_pkt = malloc(sizeof(struct ack));
    // receive initial header packet for file transmission
 
-   bytes_recd = recvfrom(sock_client, header, sizeof(struct packet), 0,
-                         (struct sockaddr *)0, (int *)0);
+   while (1)
+   {
+      bytes_recd = recvfrom(sock_client, header, sizeof(struct packet), 0,
+                            (struct sockaddr *)0, (int *)0);
 
-   // tmp variables for decoding network to host data
+      // tmp variables for decoding network to host data
 
-   short tmp = ntohs(header->count);
-   short tmp2 = ntohs(header->pack_seq);
-   printf("%s\n", header->data);
+      tmp = ntohs(header->count);
+      tmp2 = ntohs(header->pack_seq);
+
+      if (tmp2 == AckSeq)
+      {
+         printf("Packet %d received with %d data bytes\n", tmp2, tmp);
+         ACK_pkt->ack_seq = htons(AckSeq);
+         sendto(sock_client, ACK_pkt, sizeof(struct ack), 0,
+                (struct sockaddr *)&server_addr, sizeof(server_addr));
+         AckSeq = !AckSeq;
+         break;
+      }
+      else
+      {
+         printf("Duplicate packet %d recieved with %d data bytes\n", tmp2, tmp);
+      }
+   }
    strcpy(data, header->data);
    // increment total bytes
 
@@ -200,10 +219,8 @@ int main(void)
 
    // free allocated space
    fputs(buff1, f);
+   printf("Packet %d delivered to user\n", tmp2);
    free(buff1);
-
-   // print received message
-   printf("Recieved packet %d with %d bytes\n", tmp2, tmp);
    // loop while tranmission_flag is high
 
    while (transmission_flag)
