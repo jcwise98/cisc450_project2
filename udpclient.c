@@ -120,7 +120,7 @@ int main(void)
       short tmpFlag;
       printf("before first recv");
       bytes_recd = recvfrom(sock_client, &tmpFlag, sizeof(short), 0,
-                            (struct sockaddr *)&server_addr, &sizeof(server_addr));
+                            (struct sockaddr *)&server_addr, sizeof(server_addr));
       printf("after first recv");
       
       if (bytes_recd <= 0)
