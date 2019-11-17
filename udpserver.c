@@ -118,6 +118,7 @@ int main(void)
          char buffer[BUFFERSIZE]; //to read data segment from file
 
          int sequence = 0;    //keep track of packets
+         int packetsSent = 0;
          int bytes_trans = 0; //keep track of data bytes
 
          while (fgets(buffer, BUFFERSIZE - 1, received_file) != NULL)
@@ -141,6 +142,7 @@ int main(void)
             printf("Packet %d transmitted with %d data bytes\n", sequence, len);
 
             sequence = !sequence; //increment sequence tracker
+            packetsSent++;
          }
          fclose(received_file); //finish file reading
 
@@ -160,7 +162,7 @@ int main(void)
 
          //statistics
          printf("\n\n****************************************************************\n");
-         printf("Number of data packets transmitted: %d\n", sequence);
+         printf("Number of data packets transmitted: %d\n", packetsSent);
          printf("Total number of data bytes transmitted: %d\n", bytes_trans);
          printf("\n****************************************************************\n");
       }
