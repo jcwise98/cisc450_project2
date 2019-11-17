@@ -154,7 +154,7 @@ int main(void)
    short tmp = ntohs(header->count);
    short tmp2 = ntohs(header->pack_seq);
    printf("%s\n", header->data);
-   //strcpy(data, header->data);
+   strcpy(data, header->data);
    // increment total bytes
 
    total_bytes += tmp;
