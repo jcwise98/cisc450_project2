@@ -109,12 +109,19 @@ int main(void)
    // valid file flag
    short valid_file = 0;
 
+   struct packet *file_pkt = malloc(sizeof(struct packet));
+
    while (valid_file == 0)
    {
       printf("Enter name of file for transfer:");
       scanf("%s", filename);
 
-      bytes_sent = sendto(sock_client, filename, STRING_SIZE, 0,
+      file_pkt->count = htons(strlen(filename));
+      file_pkt->pack_seq = htons(0);
+
+      strcpy(file_pkt->data, filename);
+
+      bytes_sent = sendto(sock_client, file_pkt, sizeof(struct packet), 0,
                           (struct sockaddr *)&server_addr, sizeof(server_addr));
 
       // tmp flag

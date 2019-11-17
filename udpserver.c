@@ -75,14 +75,16 @@ int main(void)
 
    client_addr_len = sizeof(client_addr);
 
-   //struct packet *file_pkt = malloc(sizeof(struct packet));
+   struct packet *file_pkt = malloc(sizeof(struct packet));
 
    for (;;)
    {
 
 
-      bytes_recd = recvfrom(sock_server, &filename, STRING_SIZE, 0,
+      bytes_recd = recvfrom(sock_server, file_pkt, sizeof(struct packet), 0,
                             (struct sockaddr *)&client_addr, &client_addr_len);
+
+      strcpy(filename, file_pkt->data);
 
       if (bytes_recd > 0)
       {
