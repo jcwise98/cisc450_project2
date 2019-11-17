@@ -133,7 +133,7 @@ int main(void)
             pkt->pack_seq = htons(sequence);
             pkt->count = htons(len);
 
-            pkt->data = malloc(strlen(buffer));
+            //pkt->data = malloc(strlen(buffer));
             strcpy(pkt->data, buffer);
 
             bytes_sent = sendto(sock_server, pkt, sizeof(struct packet), 0,
