@@ -165,7 +165,7 @@ int main(void)
 
    // check if invalid packet
 
-   if (bytes_recd1 <= 0 || bytes_recd <= 0)
+   if (bytes_recd <= 0)
    {
       perror("Invalid packet(s)");
       free(header);
@@ -220,7 +220,7 @@ int main(void)
       {
          //bytes_recd1 = recvfrom(sock_client, data, tmp, 0,
          //                       (struct sockaddr *)0, (int *)0);
-         if (bytes_recd <= 0 || bytes_recd1 <= 0)
+         if (bytes_recd <= 0)
          {
             perror("Invalid packets");
             free(header);
