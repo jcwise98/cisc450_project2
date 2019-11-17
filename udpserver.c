@@ -75,8 +75,11 @@ int main(void)
 
    client_addr_len = sizeof(client_addr);
 
+   //struct packet *file_pkt = malloc(sizeof(struct packet));
+
    for (;;)
    {
+
 
       bytes_recd = recvfrom(sock_server, &filename, STRING_SIZE, 0,
                             (struct sockaddr *)&client_addr, &client_addr_len);
@@ -114,10 +117,10 @@ int main(void)
 
          struct packet *pkt = malloc(sizeof(struct packet)); //allocate space for packet struct
 
-         char *data;
+         //char *data;
          char buffer[BUFFERSIZE]; //to read data segment from file
 
-         int sequence = 0;    //keep track of packets
+         int sequence = 0; //keep track of packets
          int packetsSent = 0;
          int bytes_trans = 0; //keep track of data bytes
 
@@ -130,19 +133,19 @@ int main(void)
             pkt->pack_seq = htons(sequence);
             pkt->count = htons(len);
 
-            data = malloc(strlen(buffer));
-
-            strcpy(data, buffer);
+            pkt->data = malloc(strlen(buffer));
+            strcpy(pkt->data, buffer);
 
             bytes_sent = sendto(sock_server, pkt, sizeof(struct packet), 0,
                                 (struct sockaddr *)&client_addr, client_addr_len); //send packet header to client
-            bytes_trans += sendto(sock_server, data, strlen(buffer), 0,
-                                  (struct sockaddr *)&client_addr, client_addr_len); //send data segment to client
+            //bytes_trans += sendto(sock_server, data, strlen(buffer), 0,
+             //                     (struct sockaddr *)&client_addr, client_addr_len); //send data segment to client
 
             printf("Packet %d transmitted with %d data bytes\n", sequence, len);
 
             sequence = !sequence; //increment sequence tracker
             packetsSent++;
+            //free(pkt->data);
          }
          fclose(received_file); //finish file reading
 
@@ -151,13 +154,13 @@ int main(void)
          eot->pack_seq = htons(sequence);
 
          bytes_sent = sendto(sock_server, eot, sizeof(struct packet), 0,
-            (struct sockaddr *)&client_addr, client_addr_len); //send End of Transmission packet to client
+                             (struct sockaddr *)&client_addr, client_addr_len); //send End of Transmission packet to client
 
          printf("\nEnd of Transmission Packet with sequence number %d transmitted with %d data bytes", sequence, eot->count);
 
          //free memory
          free(pkt);
-         free(data);
+         //free(data);
          free(eot);
 
          //statistics

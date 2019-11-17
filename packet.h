@@ -8,7 +8,7 @@
 struct packet{
     short count;
     short pack_seq;
-    //char* data;
+    char* data;
 };
 
 

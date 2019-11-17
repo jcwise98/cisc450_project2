@@ -152,13 +152,14 @@ int main(void)
 
    short tmp = ntohs(header->count);
    short tmp2 = ntohs(header->pack_seq);
+   strcpy(data, header->data);
    // increment total bytes
 
    total_bytes += tmp;
 
    // receive data line
-   bytes_recd1 = recvfrom(sock_client, data, tmp, 0,
-                          (struct sockaddr *)0, (int *)0);
+   //bytes_recd1 = recvfrom(sock_client, data, tmp, 0,
+   //                       (struct sockaddr *)0, (int *)0);
 
    // check if invalid packet
 
@@ -203,6 +204,7 @@ int main(void)
                             (struct sockaddr *)0, (int *)0);
       tmp = ntohs(header->count);
       tmp2 = ntohs(header->pack_seq);
+      strcpy(data, header->data);
       total_bytes += tmp;
 
       // check for EOT packet
@@ -214,8 +216,8 @@ int main(void)
       }
       else
       {
-         bytes_recd1 = recvfrom(sock_client, data, tmp, 0,
-                                (struct sockaddr *)0, (int *)0);
+         //bytes_recd1 = recvfrom(sock_client, data, tmp, 0,
+         //                       (struct sockaddr *)0, (int *)0);
          if (bytes_recd <= 0 || bytes_recd1 <= 0)
          {
             perror("Invalid packets");
