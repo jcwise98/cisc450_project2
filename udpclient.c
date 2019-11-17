@@ -108,8 +108,8 @@ int main(void)
    // valid file flag
    short valid_file = 0;
 
-   //while (valid_file == 0)
-   //{
+   while (valid_file == 0)
+   {
       printf("Enter name of file for transfer:");
       scanf("%s", filename);
 
@@ -118,9 +118,8 @@ int main(void)
 
       // tmp flag
       short tmpFlag;
-      printf("before first recv");
       bytes_recd = recvfrom(sock_client, &tmpFlag, sizeof(short), 0,
-                            (struct sockaddr *)&server_addr, sizeof(server_addr));
+                            (struct sockaddr *)0, (int *)0);
       printf("after first recv");
       
       if (bytes_recd <= 0)
@@ -139,7 +138,7 @@ int main(void)
       else
       {
       }
-   //}
+   }
 
    int total_bytes = 0;
    int packs_rec = 0;

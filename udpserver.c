@@ -110,7 +110,7 @@ int main(void)
          validFile = 1;
          short flag = htons(validFile);
          bytes_sent = sendto(sock_server, &flag, sizeof(short), 0,
-                             (struct sockaddr *)&client_addr, &client_addr_len); //send to client flag that file was found.
+                             (struct sockaddr *)&client_addr, client_addr_len); //send to client flag that file was found.
 
          struct packet *pkt = malloc(sizeof(struct packet)); //allocate space for packet struct
 
@@ -134,9 +134,9 @@ int main(void)
             strcpy(data, buffer);
 
             bytes_sent = sendto(sock_server, pkt, sizeof(struct packet), 0,
-                                (struct sockaddr *)&client_addr, &client_addr_len); //send packet header to client
+                                (struct sockaddr *)&client_addr, client_addr_len); //send packet header to client
             bytes_trans += sendto(sock_server, data, strlen(buffer), 0,
-                                  (struct sockaddr *)&client_addr, &client_addr_len); //send data segment to client
+                                  (struct sockaddr *)&client_addr, client_addr_len); //send data segment to client
 
             printf("Packet %d transmitted with %d data bytes\n", sequence, len);
 
@@ -149,7 +149,7 @@ int main(void)
          eot->pack_seq = htons(sequence);
 
          bytes_sent = sendto(sock_server, eot, sizeof(struct packet), 0,
-            (struct sockaddr *)&client_addr, &client_addr_len); //send End of Transmission packet to client
+            (struct sockaddr *)&client_addr, client_addr_len); //send End of Transmission packet to client
 
          printf("\nEnd of Transmission Packet with sequence number %d transmitted with %d data bytes", sequence, eot->count);
 
