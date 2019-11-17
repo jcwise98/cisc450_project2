@@ -140,7 +140,7 @@ int main(void)
 
             printf("Packet %d transmitted with %d data bytes\n", sequence, len);
 
-            sequence++; //increment sequence tracker
+            sequence = !sequence; //increment sequence tracker
          }
          fclose(received_file); //finish file reading
 
