@@ -13,6 +13,6 @@ struct packet{
 
 struct ack{
     short ack_seq;
-}
+};
 
 
