@@ -80,7 +80,6 @@ int main(void)
    for (;;)
    {
 
-
       bytes_recd = recvfrom(sock_server, file_pkt, sizeof(struct packet), 0,
                             (struct sockaddr *)&client_addr, &client_addr_len);
 
@@ -118,7 +117,7 @@ int main(void)
                              (struct sockaddr *)&client_addr, client_addr_len); //send to client flag that file was found.
 
          struct packet *pkt = malloc(sizeof(struct packet)); //allocate space for packet struct
-
+         struct ack *ACK_pkt = malloc(sizeof(struct ack));
          //char *data;
          char buffer[BUFFERSIZE]; //to read data segment from file
 
@@ -140,9 +139,33 @@ int main(void)
 
             bytes_sent = sendto(sock_server, pkt, sizeof(struct packet), 0,
                                 (struct sockaddr *)&client_addr, client_addr_len); //send packet header to client
-            
+
             printf("Packet %d generated for transmission with %d data bytes", sequence, len);
 
+            //thing for timeout/loss shit here
+
+            printf("Packet %d successfully transmitted with %d data bytes", sequence, len);
+
+            while (1)
+            {
+               recvfrom(sock_server, ACK_pkt, sizeof(struct ack), 0,
+                        (struct sockaddr *)&client_addr, &client_addr_len); //recieve ACK
+               int ackSeq = ACK_pkt->ack_seq;
+               printf("ACK %d received\n");
+               if(ackSeq != sequence)
+               {
+                  bytes_sent = sendto(sock_server, pkt, sizeof(struct packet), 0,
+                                      (struct sockaddr *)&client_addr, client_addr_len); //send packet header to client
+                  printf("Packet %d generated for re-transmission with %d data bytes", sequence, len);
+
+                  //thing for timeout/loss shit here
+
+                  printf("Packet %d successfully transmitted with %d data bytes", sequence, len);
+               }
+               else {
+                  break;
+               }
+            }
             sequence = !sequence; //increment sequence tracker
             packetsSent++;
             //free(pkt->data);

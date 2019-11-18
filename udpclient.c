@@ -170,14 +170,22 @@ int main(void)
       {
          printf("Packet %d received with %d data bytes\n", tmp2, tmp);
          ACK_pkt->ack_seq = htons(AckSeq);
+         printf("ACK %d generated for transmission\n", AckSeq);
          sendto(sock_client, ACK_pkt, sizeof(struct ack), 0,
                 (struct sockaddr *)&server_addr, sizeof(server_addr));
+         printf("ACK %d successfully transmitted\n", AckSeq);
          AckSeq = !AckSeq;
          break;
       }
       else
       {
          printf("Duplicate packet %d recieved with %d data bytes\n", tmp2, tmp);
+         int oldAck = !AckSeq;
+         ACK_pkt->ack_seq = htons(oldAck);
+         printf("ACK %d generated for transmission\n", oldAck);
+         sendto(sock_client, ACK_pkt, sizeof(struct ack), 0,
+                (struct sockaddr *)&server_addr, sizeof(server_addr));
+         printf("ACK %d successfully transmitted\n", oldAck);
       }
    }
    strcpy(data, header->data);
@@ -225,11 +233,38 @@ int main(void)
 
    while (transmission_flag)
    {
+      while (1)
+      {
+         bytes_recd = recvfrom(sock_client, header, sizeof(struct packet), 0,
+                               (struct sockaddr *)0, (int *)0);
 
-      bytes_recd = recvfrom(sock_client, header, sizeof(struct packet), 0,
-                            (struct sockaddr *)0, (int *)0);
-      tmp = ntohs(header->count);
-      tmp2 = ntohs(header->pack_seq);
+         // tmp variables for decoding network to host data
+
+         tmp = ntohs(header->count);
+         tmp2 = ntohs(header->pack_seq);
+
+         if (tmp2 == AckSeq)
+         {
+            printf("Packet %d received with %d data bytes\n", tmp2, tmp);
+            ACK_pkt->ack_seq = htons(AckSeq);
+            printf("ACK %d generated for transmission\n", AckSeq);
+            sendto(sock_client, ACK_pkt, sizeof(struct ack), 0,
+                   (struct sockaddr *)&server_addr, sizeof(server_addr));
+            printf("ACK %d successfully transmitted\n", AckSeq);
+            AckSeq = !AckSeq;
+            break;
+         }
+         else
+         {
+            printf("Duplicate packet %d recieved with %d data bytes\n", tmp2, tmp);
+            int oldAck = !AckSeq;
+            ACK_pkt->ack_seq = htons(oldAck);
+            printf("ACK %d generated for transmission\n", oldAck);
+            sendto(sock_client, ACK_pkt, sizeof(struct ack), 0,
+                   (struct sockaddr *)&server_addr, sizeof(server_addr));
+            printf("ACK %d successfully transmitted\n", oldAck);
+         }
+      }
       strcpy(data, header->data);
       total_bytes += tmp;
 
@@ -266,6 +301,7 @@ int main(void)
          printf("Recieved packet %d with %d bytes\n", tmp2, tmp);
          // write to file with f puts
          fputs(buff, f);
+         printf("Packet %d delivered to user\n", tmp2);
          // free buff
          free(buff);
       }
