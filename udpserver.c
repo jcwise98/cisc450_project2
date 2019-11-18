@@ -151,7 +151,7 @@ int main(void)
                recvfrom(sock_server, ACK_pkt, sizeof(struct ack), 0,
                         (struct sockaddr *)&client_addr, &client_addr_len); //recieve ACK
                int ackSeq = ACK_pkt->ack_seq;
-               printf("ACK %d received\n");
+               printf("ACK %d received\n", ackSeq);
                if(ackSeq != sequence)
                {
                   bytes_sent = sendto(sock_server, pkt, sizeof(struct packet), 0,
