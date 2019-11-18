@@ -140,17 +140,17 @@ int main(void)
             bytes_sent = sendto(sock_server, pkt, sizeof(struct packet), 0,
                                 (struct sockaddr *)&client_addr, client_addr_len); //send packet header to client
 
-            printf("Packet %d generated for transmission with %d data bytes", sequence, len);
+            printf("Packet %d generated for transmission with %d data bytes\n", sequence, len);
 
             //thing for timeout/loss shit here
 
-            printf("Packet %d successfully transmitted with %d data bytes", sequence, len);
+            printf("Packet %d successfully transmitted with %d data bytes\n", sequence, len);
 
             while (1)
             {
                recvfrom(sock_server, ACK_pkt, sizeof(struct ack), 0,
                         (struct sockaddr *)&client_addr, &client_addr_len); //recieve ACK
-               int ackSeq = ACK_pkt->ack_seq;
+               int ackSeq = ntohs(ACK_pkt->ack_seq);
                printf("ACK %d received\n", ackSeq);
                if(ackSeq != sequence)
                {

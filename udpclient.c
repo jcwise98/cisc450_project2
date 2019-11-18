@@ -178,7 +178,7 @@ int main(void) {
       }
       else
       {
-         printf("Duplicate packet %d recieved with %d data bytes\n", tmp2, tmp);
+         printf("Duplicate packet %d received with %d data bytes\n", tmp2, tmp);
          int oldAck = !AckSeq;
          ACK_pkt->ack_seq = htons(oldAck);
          printf("ACK %d generated for transmission\n", oldAck);
@@ -297,7 +297,7 @@ int main(void) {
          // clear out any characters in data buffer
          buff[tmp] = '\0';
          // print mesage
-         printf("Recieved packet %d with %d bytes\n", tmp2, tmp);
+	 // printf("Recieved packet %d with %d bytes\n", tmp2, tmp);
          // write to file with f puts
          fputs(buff, f);
          printf("Packet %d delivered to user\n", tmp2);
