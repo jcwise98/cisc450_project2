@@ -13,8 +13,7 @@
 
 #define STRING_SIZE 1024;
 
-int main(void)
-{
+int main(void) {
 
    int sock_client; /* Socket used by client */
 
