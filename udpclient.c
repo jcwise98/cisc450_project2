@@ -11,7 +11,7 @@
 #include <unistd.h>     /* for close */
 #include "packet.h"
 
-#define STRING_SIZE 1024
+#define STRING_SIZE 1024;
 
 int main(void)
 {
